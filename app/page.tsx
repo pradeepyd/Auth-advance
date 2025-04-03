@@ -2,6 +2,7 @@
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { LoginButton } from "@/components/auth/login-button";
 
 const font = Poppins({
   weight:["600"],
@@ -15,7 +16,9 @@ export default function Home() {
             <h1 className={cn("font-semibold text-6xl drop-shadow-md text-white",font.className,)}>🔐Auth</h1>
             <p className="text-white text-lg">A simple authenication service</p>
             <div>
-              <Button variant={'secondary'} size={'lg'} className="text-lg">Sign in</Button>
+              <LoginButton>
+                <Button variant={'secondary'} size={'lg'} className="text-lg">Sign in</Button>
+              </LoginButton>
             </div>
       </div>
     </main>
