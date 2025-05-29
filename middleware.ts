@@ -8,7 +8,7 @@ import {
   DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
 
-const { auth} = NextAuth(authConfig);
+const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const { nextUrl } = req;
