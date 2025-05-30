@@ -17,6 +17,10 @@ declare module "next-auth" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  pages:{
+    signIn: "/auth/login",
+    error: "/auth/error",
+  },
   events:{
     async linkAccount({user}){
       await prisma.user.update({
@@ -26,14 +30,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }
   },
   callbacks: {
-    // async signIn({ user }) {
-    //   if(!user.id) return false;
-    //   const existingUser = await getUserById(user.id);
-    //   if(!existingUser || !existingUser.emailVerified) {
-    //     return false;
-    //   }
-    //   return true;
-    // },
+    async signIn({ user , account }) {
+      //allow OAuth without email verification
+      if(account?.provider !== "credentials") return true;
+
+      if(!user.id) return false;
+      const existingUser = await getUserById(user.id);
+      //prevent signin without email verification
+      if(!existingUser || !existingUser.emailVerified) {
+        return false;
+      }
+      //TODO :Add 2FA check
+      return true;
+    },
 
     async session({ token, session }) {
       console.log({ sessionToken: token });
