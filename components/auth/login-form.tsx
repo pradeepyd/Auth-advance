@@ -38,6 +38,7 @@ export const LoginForm = () => {
     defaultValues: {
       email: "",
       password: "",
+      code:"",
     },
   });
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
@@ -145,7 +146,7 @@ export const LoginForm = () => {
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
           <Button type="submit" disabled={isPending} className="w-full">
-            Login
+            {showTwoFactor ? "Confirm" : "Login"}
           </Button>
         </form>
       </Form>
