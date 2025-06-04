@@ -1,3 +1,4 @@
+// THIS can be use in server component ,api routes  server actions and any server side
 import { auth } from "@/auth"
 
 

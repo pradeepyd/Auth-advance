@@ -9,11 +9,12 @@ import { getUserByEmail } from "@/data/user";
 import { generateTwoFactorToken, generateVerificationToken } from "@/lib/tokens";
 import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/lib/mail";
 import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
-import { error } from "console";
 import { prisma } from "@/lib/db";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-faactor-confirmation";
 
-export const login = async(values:z.infer<typeof LoginSchema>) => {
+export const login = async(values:z.infer<typeof LoginSchema>,
+    callbackUrl?:string | null,
+) => {
     const validatedFields = LoginSchema.safeParse(values);
 
     if(!validatedFields.success){
@@ -85,16 +86,16 @@ export const login = async(values:z.infer<typeof LoginSchema>) => {
         await signIn('credentials',{
             email,
             password,
-            redirectTo:DEFAULT_LOGIN_REDIRECT
+            redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT
         })
-        // return {success:"email sent"}
+        return {success:"email sent"}
     }catch(error) {
         if(error instanceof AuthError) {
             switch (error.type){
                 case "CredentialsSignin":
                     return {error: "Invalid credentials!"}
                 default:
-                    return {error: "Something went wrong"}    
+                    return {error: "Something went wrong 234"}    
             }
         }
         throw error;
